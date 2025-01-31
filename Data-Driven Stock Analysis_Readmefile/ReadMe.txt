@@ -1,9 +1,15 @@
-Here's a detailed README file for Bookscape project:
+Here's a detailed README file for Data-Driven Stock Analysis:
 _____________________________________________________
 
-Project Name: Bookscape Explorer
+Project Name: Data-Driven Stock Analysis
 
-Description: Bookscape Explorer is a Streamlit application that allows users to search for books using the Google Books API, store book details in a MySQL database, and perform various data analyses on the stored data.
+Description: The Stock Performance Dashboard project aims to 
+deliver a robust and interactive platform for visualizing and analyzing the performance of Nifty 
+50 stocks over the past year. By leveraging advanced data processing and visualization tools, 
+this project will provide valuable insights into stock trends, helping investors, analysts, and 
+enthusiasts make informed decisions. The dashboard will utilize daily stock data, including 
+open, close, high, low, and volume values, to generate comprehensive performance metrics 
+and visualizations..
 
 Table of Contents
 ******************
@@ -21,12 +27,8 @@ Installation
 	•	Python 3.7 or higher
 	•	MySQL Server
 	•	MySQL Workbench (optional, for database management)
-
-Clone the Repository
-*********************
-git clone https://github.com/yourusername/bookscape-explorer.git
-cd bookscape-explorer
-
+  	•	Power BI
+	
 Install Dependencies
 ********************
 pip install -r requirements.txt
@@ -35,36 +37,39 @@ MySQL Database Setup:
 **********************
 
 1.	Create a MySQL Database:
-   	CREATE DATABASE bookscape;
+   	CREATE DATABASE Stockanalysis;
 2.	Create the books Table:
-  	 USE bookscape;
-   	 CREATE TABLE books (
-       		book_id VARCHAR(36) PRIMARY KEY,
-       		search_key VARCHAR(255),
-       		book_title VARCHAR(255),
-       		book_subtitle VARCHAR(255),
-       		book_authors TEXT,
-       		book_description TEXT,
-       		industryIdentifiers TEXT,
-       		text_readingModes INT,
-       		image_readingModes INT,
-       		pageCount INT,
-       		languages VARCHAR(50),
-       		imageLinks TEXT,
-       		ratingsCount INT,
-       		averageRating FLOAT,
-       		country VARCHAR(50),
-       		saleability VARCHAR(50),
-       		isEbook BOOLEAN,
-       		amount_listPrice FLOAT,
-       		currencyCode_listPrice VARCHAR(10),
-       		amount_retailPrice FLOAT,
-       		currencyCode_retailPrice VARCHAR(10),
-       		buyLink TEXT,
-       		Publishedyear VARCHAR(10),
-       		categories TEXT,
-       		publisher VARCHAR(255)
-   );
+  	 USE Stockanalysis;
+   	 CREATE TABLE `volatilityanalysis` (
+		 `Ticker` varchar(10) NOT NULL,
+		 `Volatility` float DEFAULT NULL,
+		 PRIMARY KEY (`Ticker`)
+		)
+		CREATE TABLE `cumulativereturnanalysis` (
+		 `Ticker` text,
+		 `Cumulative` double DEFAULT NULL
+		)
+		CREATE TABLE `sectorperformance` (
+		 `Sector` text,
+		 `Average Yearly Return` double DEFAULT NULL
+		)
+		CREATE TABLE `gainers` (
+		 `id` int NOT NULL AUTO_INCREMENT,
+		 `month` varchar(7) NOT NULL,
+		 `ticker` varchar(10) NOT NULL,
+		 `percentage_return` decimal(10,2) NOT NULL,
+		 PRIMARY KEY (`id`),
+		 UNIQUE KEY `month` (`month`,`ticker`)
+		)
+		CREATE TABLE `losers` (
+		 `id` int NOT NULL AUTO_INCREMENT,
+		 `month` varchar(7) NOT NULL,
+		 `ticker` varchar(10) NOT NULL,
+		 `percentage_return` decimal(10,2) NOT NULL,
+		 PRIMARY KEY (`id`),
+		 UNIQUE KEY `month` (`month`,`ticker`)
+		)
+
 
 Configuration
 **************
@@ -72,10 +77,6 @@ Configuration
 	•	Update the database connection string in your code:
 		engine = create_engine('mysql+pymysql://root:yourpassword@localhost:3306/bookscape')
 
-Google Books API Key
-********************
-	Replace "Your api key" with your actual Google Books API key in the code:
-	api_key = "Your api key"
 
 Run the Application
 *******************
@@ -88,37 +89,42 @@ Access the Application
 Features
 ********
 Home Page
-•	Introduction to Bookscape Explorer.
-Search Page
-•	Search for books based on genre, authors, etc.
-•	Fetch book details from the Google Books API.
-•	Store book details in the MySQL database.
-Data Analysis Page
-•	Perform various data analyses on the stored book data.
-Data Analysis Options
-1.	Check Availability of eBooks vs Physical Books
-2.	Find the Publisher with the Most Books Published
-3.	Identify the Publisher with the Highest Average Rating
-4.	Get the Top 5 Most Expensive Books by Retail Price
-5.	Find Books Published After 2010 with at Least 500 Pages
-6.	List Books with Discounts Greater than 20%
-7.	Find the Average Page Count for eBooks vs Physical Books
-8.	Find the Top 3 Authors with the Most Books
-9.	List Publishers with More than 10 Books
-10.	Find the Average Page Count for Each Category
-11.	Retrieve Books with More than 3 Authors
-12.	Books with Ratings Count Greater Than the Average
-13.	Books with the Same Author Published in the Same Year
-14.	Books with a Specific Keyword in the Title
-15.	Year with the Highest Average Book Price
-16.	Count Authors Who Published 3 Consecutive Years
-17.	Find Authors Who Published Books in the Same Year but Under Different Publishers
-18.	Find the Average Retail Price of eBooks and Physical Books
-19.	Identify Books with Ratings Significantly Different from the Average
-20.	Determine the Publisher with the Highest Average Rating
+•	 The Stock Performance Dashboard project aims to 
+deliver a robust and interactive platform for visualizing and analyzing the performance of Nifty 
+50 stocks over the past year. By leveraging advanced data processing and visualization tools, 
+this project will provide valuable insights into stock trends, helping investors, analysts, and 
+enthusiasts make informed decisions. The dashboard will utilize daily stock data, including 
+open, close, high, low, and volume values, to generate comprehensive performance metrics 
+and visualizations.
+
+Data Cleaning
+• 	Data Source: The data is provided in YAML format, organized by months. 
+Each month's folder contains date-wise data entries.
+• 	Objective: The main task is to extract data from the YAML files and transform it into CSV format, organized by symbols.
+• 	Output: The extraction process will result in 50 CSV files, each corresponding to a specific symbol or data categoryData Analysis Page
+
+Volatility Analysis
+•	Objective: To visualize the volatility of each stock over the past year by calculating the standard deviation of daily returns.
+•	Purpose: Understanding volatility helps in assessing the risk associated with each stock. Higher volatility indicates greater risk, while lower volatility suggests a more stable stock.
+
+Cumulative Return
+•	Objective: To illustrate the cumulative return of each stock from the beginning to the end of the year.
+•	Purpose: Cumulative return is a key metric for visualizing overall performance and growth over time, enabling users to compare the performance of different stocks.
+
+Sector-wise Performance
+•	Objective: To provide a detailed breakdown of stock performance by sector, using sec-tor data shared in CSV format.
+•	Purpose: Sector performance analysis helps investors and analysts gauge market sen-timent in specific industries, such as IT, Financials, Energy, etc.
+
+Stock Price Correlation
+•	Objective: To visualize the correlation between the stock prices of different companies.
+•	Purpose: Understanding stock price correlations helps identify if certain stocks tend to move together, which can be indicative of market trends or sector performance.
+
+Top 5 Gainers and Losers (Month-wise)
+•	Objective: To provide detailed monthly breakdowns of the top-performing and worst-performing stocks.
+•	Purpose: This analysis helps users observe granular trends and identify which stocks are gaining or losing momentum on a monthly basis.
+
 
 Troubleshooting:
 ****************
 	Common Issues
 	•	Database Connection Error: Ensure your MySQL server is running and the connection string is correct.
-	•	API Rate Limit Exceeded: If you encounter a rate limit error, wait for a while before making new requests.
